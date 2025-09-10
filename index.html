@@ -350,6 +350,7 @@
     }
 
     #donate {
+      display: none;
       position: fixed;
       bottom: calc(160px + 1.5rem);
       left: 1rem;
@@ -598,6 +599,9 @@
         'value': window.roullete.getCount(),
       });
       window.roullete.start();
+      if (document.querySelector('#chkMusic').checked) {
+        document.querySelector('#bgm').play();
+      }
       document.querySelector('#settings').classList.add('hide');
       document.querySelector('#donate').classList.add('hide');
     });
@@ -619,19 +623,15 @@
     });
 
 		document.querySelector('#chkMusic').addEventListener('change', (e) => {
-			const bgm = document.querySelector('#bgm');
-			if (e.target.matches(':checked')) {
-				bgm.play();
-			} else {
-				bgm.pause();
-			}
-		});
-
-		document.querySelector('#in_winningRank').addEventListener('change', (e) => {
-			const v = parseInt(e.target.value, 10);
-			winnerType = 'custom';
-			setWinnerRank(isNaN(v) ? 0 : v);
-		});
+				const bgm = document.querySelector('#bgm');
+				if (e.target.matches(':checked')) {
+					if (window.roullete.isRunning) {
+						bgm.play();
+					}
+				} else {
+					bgm.pause();
+				}
+			});
 
     document.querySelector('.btn-last-winner').addEventListener('click', () => {
       const total = window.roullete.getCount();
@@ -740,6 +740,17 @@
       }
     };
 
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') {
+        getReady();
+        document.querySelector('#settings').classList.remove('hide');
+        document.querySelector('#donate').classList.remove('hide');
+        const bgm = document.querySelector('#bgm');
+        bgm.pause();
+        bgm.currentTime = 0;
+      }
+    });
+
     checkNotice();
 
 
@@ -828,7 +839,7 @@
     <button id="closeNotice" data-trans>Close</button>
   </div>
 </div>
-<audio id="bgm" src="assets/bgm.mp3" loop autoplay></audio>
+<audio id="bgm" src="assets/bgm.mp3" loop></audio>
 <div class="copyright">&copy; 2025.<a href="https://lazygyu.net" target="_blank">lazygyu</a> <span data-trans>This program is freeware and may be used freely anywhere, including in broadcasts and videos.</span>
 </div>
 </body>

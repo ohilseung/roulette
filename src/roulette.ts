@@ -56,6 +56,10 @@ export class Roulette extends EventTarget {
     return this._isReady;
   }
 
+  get isRunning() {
+    return this._isRunning;
+  }
+
   constructor() {
     super();
     this._renderer.init().then(() => {
@@ -400,6 +404,7 @@ export class Roulette extends EventTarget {
   }
 
   public reset() {
+    this._isRunning = false;
     this.clearMarbles();
     this._clearMap();
     this._loadMap();
