@@ -349,9 +349,15 @@
 	let winnerType = 'first';
 
 	document.addEventListener('DOMContentLoaded', () => {
-		const savedNames = localStorage.getItem('mbr_names');
-		if (savedNames) {
-			document.querySelector('#in_names').value = savedNames;
+		const urlParams = new URLSearchParams(window.location.search);
+		const namesFromUrl = urlParams.get('mbr_names');
+		if (namesFromUrl) {
+			document.querySelector('#in_names').value = decodeURIComponent(namesFromUrl);
+		} else {
+			const savedNames = localStorage.getItem('mbr_names');
+			if (savedNames) {
+				document.querySelector('#in_names').value = savedNames;
+			}
 		}
 		document.querySelector('#in_names').addEventListener('input', () => {
 			getReady();
