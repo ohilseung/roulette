@@ -419,6 +419,15 @@
 			window.roullete.setWinningRank(window.options.winningRank);
 		});
 
+		document.querySelector('#chkMusic').addEventListener('change', (e) => {
+			const bgm = document.querySelector('#bgm');
+			if (e.target.matches(':checked')) {
+				bgm.play();
+			} else {
+				bgm.pause();
+			}
+		});
+
 		document.querySelector('#in_winningRank').addEventListener('change', (e) => {
 			const v = parseInt(e.target.value, 10);
 			winnerType = 'custom';
