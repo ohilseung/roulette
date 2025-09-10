@@ -8,7 +8,7 @@ This is a lucky draw by dropping marbles.
 
 You can set the list of participants by providing the `mbr_names` parameter in the URL. The names should be separated by commas.
 
-Example: `https://lazygyu.github.io/roulette?mbr_names=신형만,봉미선,신짱구,신짱아
+Example: `https://lazygyu.github.io/roulette?mbr_names=신형만,봉미선,신짱구,신짱아`
 
 # Requirements
 
