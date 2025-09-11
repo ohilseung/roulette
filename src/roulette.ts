@@ -241,7 +241,10 @@ export class Roulette extends EventTarget {
   }
 
   private async _init() {
-    this._recorder = new VideoRecorder(this._renderer.canvas);
+    const bgm = document.querySelector('#bgm') as HTMLAudioElement;
+    setTimeout(() => {
+      this._recorder = new VideoRecorder(this._renderer.canvas, bgm);
+    }, 1000)
 
     this.physics = new Box2dPhysics();
     await this.physics.init();

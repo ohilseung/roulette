@@ -8,9 +8,16 @@ export class VideoRecorder {
   private chunks: Blob[] = [];
   private stopping = false;
 
-  constructor(canvas: HTMLCanvasElement) {
+  constructor(canvas: HTMLCanvasElement, audio?: HTMLAudioElement) {
     this.targetCanvas = canvas;
     this.videoStream = this.targetCanvas.captureStream();
+    if (audio) {
+      const audioStream = audio.captureStream();
+      const audioTrack = audioStream.getAudioTracks()[0];
+      if (audioTrack) {
+        this.videoStream.addTrack(audioTrack);
+      }
+    }
     this.mediaRecorder = new MediaRecorder(this.videoStream, {
       videoBitsPerSecond: 6000000,
       mimeType: 'video/mp4',
