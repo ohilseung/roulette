@@ -143,6 +143,10 @@
         &.bomb {
           mask-image: url('assets/images/bomb.svg');
         }
+
+        &.music {
+          mask-image: url('assets/images/music.svg');
+        }
       }
 
       div.left {
@@ -228,6 +232,32 @@
           content: '';
           background: #00baff;
         }
+      }
+
+      input[type=range] {
+        width: 100%;
+        -webkit-appearance: none;
+        background: transparent;
+        height: 25px;
+        vertical-align: middle;
+      }
+
+      input[type=range]::-webkit-slider-runnable-track {
+        width: 100%;
+        height: 5px;
+        cursor: pointer;
+        background: #999;
+        border-radius: 5px;
+      }
+
+      input[type=range]::-webkit-slider-thumb {
+        -webkit-appearance: none;
+        height: 15px;
+        width: 15px;
+        border-radius: 50%;
+        background: #ccc;
+        cursor: pointer;
+        margin-top: -5px;
       }
 
       .btn-group {
@@ -599,7 +629,7 @@
         'value': window.roullete.getCount(),
       });
       window.roullete.start();
-      if (document.querySelector('#chkMusic').checked) {
+      if (document.querySelector('#volumeSlider').value > 0) {
         document.querySelector('#bgm').play();
       }
       document.querySelector('#settings').classList.add('hide');
@@ -622,16 +652,28 @@
       setWinnerRank(isNaN(v) ? 0 : v);
     });
 
-		document.querySelector('#chkMusic').addEventListener('change', (e) => {
-				const bgm = document.querySelector('#bgm');
-				if (e.target.matches(':checked')) {
-					if (window.roullete.isRunning) {
-						bgm.play();
-					}
-				} else {
-					bgm.pause();
-				}
-			});
+		const volumeSlider = document.querySelector('#volumeSlider');
+    const bgm = document.querySelector('#bgm');
+    const savedVolume = localStorage.getItem('mbr_volume');
+    if (savedVolume) {
+      volumeSlider.value = savedVolume;
+      bgm.volume = savedVolume;
+    } else {
+      bgm.volume = volumeSlider.value;
+    }
+
+    volumeSlider.addEventListener('input', (e) => {
+      const volume = e.target.value;
+      bgm.volume = volume;
+      if (volume > 0) {
+        if (window.roullete.isRunning) {
+          bgm.play();
+        }
+      } else {
+        bgm.pause();
+      }
+      localStorage.setItem('mbr_volume', volume);
+    });
 
     document.querySelector('.btn-last-winner').addEventListener('click', () => {
       const total = window.roullete.getCount();
@@ -792,9 +834,10 @@
     </div>
     <div class="row">
       <label>
-        Music
+        <i class="icon music"></i>
+        <span data-trans>배경음악</span>
       </label>
-      <input type="checkbox" id="chkMusic" checked />
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.1" value="1" />
     </div>
   </div>
   <div class="left">

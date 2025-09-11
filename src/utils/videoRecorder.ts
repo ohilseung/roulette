@@ -13,6 +13,7 @@ export class VideoRecorder {
     this.videoStream = this.targetCanvas.captureStream();
     this.mediaRecorder = new MediaRecorder(this.videoStream, {
       videoBitsPerSecond: 6000000,
+      mimeType: 'video/mp4',
     });
   }
 
